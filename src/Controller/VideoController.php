@@ -40,14 +40,17 @@ class VideoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getUser();  // Récupère l'utilisateur connecté
-        $video->setUser($user);    // Associe l'utilisateur à la vidéo
-        
-        $video->setCreatedAt(new \DateTimeImmutable());
-        $video->setUpdatedAt(new \DateTimeImmutable());
-        
-        $em->persist($video);
-        $em->flush();
-        $this->addFlash('success', '👍 Votre vidéo a bien été créée!');
+            $video->setUser($user);    // Associe l'utilisateur à la vidéo
+
+            // Convertir l'URL en URL d'intégration et mettre à jour l'entité
+            $video->setVideoLink($video->getEmbedUrl());
+
+            $video->setCreatedAt(new \DateTimeImmutable());
+            $video->setUpdatedAt(new \DateTimeImmutable());
+            
+            $em->persist($video);
+            $em->flush();
+            $this->addFlash('success', '👍 Votre vidéo a bien été créée!');
 
             return $this->redirectToRoute('app_video_index', [], Response::HTTP_SEE_OTHER);
         }

@@ -88,4 +88,18 @@ class Video
 
         return $this;
     }
+
+    public function getEmbedUrl(): string
+    {
+        return $this->convertToEmbedUrl($this->videoLink);
+    }
+
+    private function convertToEmbedUrl(string $url): string
+    {
+        $regex = '/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^"&?\/\s]{11})/';
+        if (preg_match($regex, $url, $matches) && isset($matches[1])) {
+            return sprintf('https://www.youtube.com/embed/%s', $matches[1]);
+        }
+        return $url;
+    }
 }
