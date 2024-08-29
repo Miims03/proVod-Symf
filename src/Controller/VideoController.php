@@ -22,7 +22,7 @@ class VideoController extends AbstractController
         ]);
     }
     #[Route('/api/video', methods: ['GET'])]
-    public function indexApi(EntityManagerInterface $em): Response
+    public function indexApi(EntityManagerInterface $em)
     {
         $videos = $em->getRepository(Video::class)->findAll();
         return $this->json($videos , 200 , [] , [
